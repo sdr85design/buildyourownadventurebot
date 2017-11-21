@@ -20,9 +20,9 @@ function fPlay(req, res){
   var sFrom = req.body.From;
   var sAction = req.body.Body;
   var twiml = new twilio.twiml.MessagingResponse();
-  if(sAction.toLowerCase().search("Login") != -1){
+  if(sAction.toLowerCase().search("login") != -1){
     twiml.message("I would love to help you with that. Could you please foward me your email you have with us.");
-  }else if(sAction.toLowerCase().search("Network") != -1){
+  }else if(sAction.toLowerCase().search("network") != -1){
     twiml.message("Are you having trouble loading the page? Yes/No ");
     oConnections[sFrom].fCurState = fStickOrHydrant;
   }else{
@@ -33,7 +33,7 @@ function fPlay(req, res){
   res.end(twiml.toString());
 }
 //fStick is for phone option
-function fStick(req, res){
+ function fStick(req, res){
   var sFrom = req.body.From;
   var sAction = req.body.Body;
   var twiml = new twilio.twiml.MessagingResponse();
@@ -60,6 +60,7 @@ function fStickOrHydrant(req, res){
     oConnections[sFrom].fCurState = fStick;
   }else if(sAction.toLowerCase().search("web") != -1){
     twiml.message("Are you having a login problem or a network problem?");
+    oConnections[sFrom].fCurState = fPlay;
   }else {
     twiml.message("Sorry I can't seem to help you with " + sAction + " Please feel free to give our Customer Service a call.")
   }
