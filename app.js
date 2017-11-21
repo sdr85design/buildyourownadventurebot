@@ -15,52 +15,53 @@ var sPath = path.join(__dirname, '.');
 app.use(express.static(sPath));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//for web
 function fPlay(req, res){
   var sFrom = req.body.From;
   var sAction = req.body.Body;
   var twiml = new twilio.twiml.MessagingResponse();
-  if(sAction.toLowerCase().search("yes") != -1){
-    twiml.message("Oh glory. Here it is. I got it for you. Do you throw it again?");
-  }else if(sAction.toLowerCase().search("no") != -1){
-    twiml.message("Oh well. Wait .... Over there is that a stick or a fire hydrant?");
+  if(sAction.toLowerCase().search("login") != -1){
+    twiml.message("I would love to help you with that. Could you please foward me your email you have with us.");
+  }else if(sAction.toLowerCase().search("network") != -1){
+    twiml.message("Are you having trouble loading the page? Yes/No ");
     oConnections[sFrom].fCurState = fStickOrHydrant;
   }else{
-    twiml.message("Wow! I've never seen you do " + sAction + " before. Wait .... Over there is that a stick or a fire hydrant?")
-    oConnections[sFrom].fCurState = fStickOrHydrant;    
+    twiml.message("Sorry I can't seem to help you with " + sAction + " Please feel free to give our Customer Service a call.")
+    oConnections[sFrom].fCurState = fStickOrHydrant;
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 }
-
+//for phone
 function fStick(req, res){
   var sFrom = req.body.From;
   var sAction = req.body.Body;
   var twiml = new twilio.twiml.MessagingResponse();
-  if(sAction.toLowerCase().search("eat") != -1){
+  if(sAction.toLowerCase().search("yes") != -1){
     oConnections[sFrom].fCurState = fStickOrHydrant;
-    twiml.message("Yum! Sticks are the best thing ever lot's of roughage. Wait .... Over there is that a stick or a fire hydrant?");
-  }else if(sAction.toLowerCase().search("take") != -1){
-    twiml.message("Please play with me. Do you throw the stick?");
+    twiml.message("I would love to help you with that. Could you please foward me your email you have with us.");
+  }else if(sAction.toLowerCase().search("no") != -1){
+    twiml.message("Are you having a technical problem? Yes/No");
     oConnections[sFrom].fCurState = fPlay;
   }else{
-    twiml.message("Wow! I've never done " + sAction + " before. Wait .... Over there is that a stick or a fire hydrant?")
-    oConnections[sFrom].fCurState = fStickOrHydrant;    
+    twiml.message("Sorry I can't seem to help you with " + sAction + " Please feel free to give our Customer Service a call.")
+    oConnections[sFrom].fCurState = fStickOrHydrant;
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 }
-
+//Functions for stick or hydrant - my code will be for Phone or Web
 function fStickOrHydrant(req, res){
   var sFrom = req.body.From;
   var sAction = req.body.Body;
   var twiml = new twilio.twiml.MessagingResponse();
-  if(sAction.toLowerCase().search("stick") != -1){
-    twiml.message("I love sticks.... Should I eat it or take it to my person so he will throw it?");
+  if(sAction.toLowerCase().search("phone") != -1){
+    twiml.message("Are you having trouble logging in? Yes/No ");
     oConnections[sFrom].fCurState = fStick;
-  }else if(sAction.toLowerCase().search("hydrant") != -1){  
-    twiml.message("Pee mail! How exciting. Wait .... Over there is that a stick or a fire hydrant?");
+  }else if(sAction.toLowerCase().search("web") != -1){
+    twiml.message("Are you having a login problem or a network problem?");
   }else {
-    twiml.message("Wow! I've never seen " + sAction + " before. Wait .... Over there is that a stick or a fire hydrant?")
+    twiml.message("Sorry I can't seem to help you with " + sAction + " Please feel free to give our Customer Service a call.")
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
@@ -70,7 +71,7 @@ function fBeginning(req, res){
   var sFrom = req.body.From;
   oConnections[sFrom].fCurState = fStickOrHydrant;
   var twiml = new twilio.twiml.MessagingResponse();
-  twiml.message('Hi ... My name is Sheba. I am very enthusiastic about this game. Wait! Is that a stick or a fire hydrant?');
+  twiml.message('Hi there, this is Sandra from Tech Support. How can I help you? Are you looking for Phone or Web Support?');
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 
