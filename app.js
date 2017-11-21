@@ -15,14 +15,14 @@ var sPath = path.join(__dirname, '.');
 app.use(express.static(sPath));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//for web
+//fPlay is for web option
 function fPlay(req, res){
   var sFrom = req.body.From;
   var sAction = req.body.Body;
   var twiml = new twilio.twiml.MessagingResponse();
-  if(sAction.toLowerCase().search("login") != -1){
+  if(sAction.toLowerCase().search("Login") != -1){
     twiml.message("I would love to help you with that. Could you please foward me your email you have with us.");
-  }else if(sAction.toLowerCase().search("network") != -1){
+  }else if(sAction.toLowerCase().search("Network") != -1){
     twiml.message("Are you having trouble loading the page? Yes/No ");
     oConnections[sFrom].fCurState = fStickOrHydrant;
   }else{
@@ -32,15 +32,15 @@ function fPlay(req, res){
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 }
-//for phone
+//fStick is for phone option
 function fStick(req, res){
   var sFrom = req.body.From;
   var sAction = req.body.Body;
   var twiml = new twilio.twiml.MessagingResponse();
-  if(sAction.toLowerCase().search("yes") != -1){
+  if(sAction.toLowerCase().search("Yes") != -1){
     oConnections[sFrom].fCurState = fStickOrHydrant;
-    twiml.message("I would love to help you with that. Could you please foward me your email you have with us.");
-  }else if(sAction.toLowerCase().search("no") != -1){
+    twiml.message("I would love to help you with that. Could you please foward me your email you created your account with. And text the word \"sent\" ");
+  }else if(sAction.toLowerCase().search("No") != -1){
     twiml.message("Are you having a technical problem? Yes/No");
     oConnections[sFrom].fCurState = fPlay;
   }else{
