@@ -27,7 +27,7 @@ function fPlay(req, res){
     oConnections[sFrom].fCurState = fStickOrHydrant;
   }else{
     twiml.message("Sorry I can't seem to help you with " + sAction + " Please feel free to give our Customer Service a call.")
-    oConnections[sFrom].fCurState = fStickOrHydrant;
+    oConnections[sFrom].fCurState = fBeginning;
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
@@ -45,7 +45,7 @@ function fStick(req, res){
     oConnections[sFrom].fCurState = fPlay;
   }else{
     twiml.message("Sorry I can't seem to help you with " + sAction + " Please feel free to give our Customer Service a call.")
-    oConnections[sFrom].fCurState = fStickOrHydrant;
+    oConnections[sFrom].fCurState = fBeginning;
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
